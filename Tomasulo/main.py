@@ -1,6 +1,5 @@
 from utils.instruction import Instruction
 from utils.Tomasulo import TomasuloAlgorithm
-from utils.register import Register
 from utils.event import Event, EventQueue
 
 def eventEngine(event_queue):
@@ -17,6 +16,9 @@ def eventEngine(event_queue):
         if(input() != ""):
             continue
         
+        event_queue.print()
+        tomasulo.print()
+
         # Send next event to the system
         event = event_queue.getNextEvent()
         new_event = tomasulo.receiveEvent(event)

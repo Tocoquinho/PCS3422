@@ -1,0 +1,68 @@
+# instruções lógico-aritméticas - rd = rs1 + rs2
+# type "logical-arithmetic"
+add     rd, rs1, rs2
+sub     rd, rs1, rs2
+xor     rd, rs1, rs2
+or      rd, rs1, rs2
+and     rd, rs1, rs2
+sll     rd, rs1, rs2
+srl     rd, rs1, rs2
+sra     rd, rs1, rs2
+slt     rd, rs1, rs2
+sltu    rd, rs1, rs2
+
+
+# instruções lógico-aritméticas com imediato - rd = rs + imm
+# type "logical-arithmetic-imm"
+addi    rd, rs1, imm
+xori    rd, rs1, imm
+ori     rd, rs1, imm
+andi    rd, rs1, imm
+slli    rd, rs1, imm
+srli    rd, rs1, imm
+srai    rd, rs1, imm
+slti    rd, rs1, imm
+sltiu   rd, rs1, imm
+
+# type "u-imm"
+lui     rd, imm
+auipc   rd, imm
+
+# instruções de load - rd <- Mem[ra+imm]
+# type "load"
+lb      rd, imm(ra)
+lh      rd, imm(ra)
+lw      rd, imm(ra)
+lbu     rd, imm(ra)
+lhu     rd, imm(ra)
+
+# instruções de store - Mem[ra+imm] <- rs
+# type "store"
+sb      rs, imm(ra)
+sh      rs, imm(ra)
+sw      rs, imm(ra)
+
+# instruções de desvio de fluxo - salta para imm se rd = rs1
+# type "branch-jump"
+beq     rd, rs1, imm
+bne     rd, rs1, imm
+blt     rd, rs1, imm
+bge     rd, rs1, imm
+bltu    rd, rs1, imm
+bgeu    rd, rs1, imm
+jalr    rd, rs1, imm
+
+# type "jump-imm"
+jal     rd, imm
+
+
+# instruções de multiplicação e divisão
+# type "mul-div"
+mul     rd, rs1, rs2
+mulh    rd, rs1, rs2
+mulhsu  rd, rs1, rs2
+mulhu   rd, rs1, rs2
+div     rd, rs1, rs2
+divu    rd, rs1, rs2
+rem     rd, rs1, rs2
+remu    rd, rs1, rs2

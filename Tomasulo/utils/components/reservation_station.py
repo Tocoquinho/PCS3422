@@ -4,58 +4,40 @@ class ActiveReservationStation():
         self.args = args
 
 
-    def isExecutable():
+    def isExecutable(self):
         """
         Check if the instruction is executable, 
         i.e. all the arguments are available.
         """
-        for arg in args:
+        for arg in self.args:
             if type(arg) == str:
                 return False
         return True
 
 
-    def updateDependency(self, rs_name, data):
+    def updateDependency(self, rs_name):
         """
         Checks if the instruction inside this RS depends on the
-        provided rs_name. If it does, update it with the value
+        provided rs_name. If it does, update it with the value.
+        The value is 1 as an abstraction.
         """
-        for i in range(len(args)):
-            if args[i] == rs_name:
-                args[i] = data
-    
+        for i in range(len(self.args)):
+            if self.args[i] == rs_name:
+                self.args[i] = 1
 
-    def calculateResult():
-        """
-        Calculates the result of the instruction.
-        """
-        operation = self.instruction.instruction_type
-        if operation == '+':
-            return args[0] + args[1]
-
-        if operation == '-':
-            return args[0] - args[1]
-
-        if operation == '*':
-            return args[0] * args[1]
-
-        if operation == '/':
-            try:
-                return args[0] / args[1]
-            except:
-                return None
-        else:
-            return None
+    def print(self):
+        self.instruction.print()
+        print(f"    Args: {self.args}")
 
 
 class ReservationStations():
     def __init__(self, size, rs_type):
         self.stations = {}
         for i in range(1, size + 1):
-            stations[rs_type + str(i)] = None
+            self.stations[rs_type + str(i)] = None
 
 
-    def append(self, instruction_type, args, instruction):
+    def allocate(self, instruction, args):
         """
         Get an instruction that must wait for a busy register and
         store at the reservation station (RS). If the RS is full, 
@@ -75,7 +57,7 @@ class ReservationStations():
         self.stations[rs_name] = None
 
 
-    def updateDependencies(self, rs_name, data):
+    def updateDependencies(self, rs_name):
         """
         Get a reservation station that just finished its execution and
         updates all other reservation stations that depended on it.
@@ -85,9 +67,16 @@ class ReservationStations():
         executable_RSs = []
         for key in self.station.keys():
             if self.station[key] == None:
-                self.station[key].updateDependency(rs_name, data)
+                self.station[key].updateDependency(rs_name)
                 # Check if there is no other dependency for this RS
                 if self.station[key].isExecutable():
                     executable_RSs.append(key)
         return executable_RSs
 
+    def print(self):
+        for name, station in self.stations.values():
+            print(f"Station {name}")
+            if station != None:
+                station.print()
+            else:
+                print("_")

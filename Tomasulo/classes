@@ -1,0 +1,37 @@
+Instruction
+    - String instrução
+    - Dict etapas: Issued, Started, Finished, Write Complete
+    - int ExecutionTime = 10
+
+    * getInstructionParameters(): traduz string para argumentos e output
+
+
+ReservationStation
+    - String operação
+    - float operando1
+    - float operando2
+
+ReservationStations
+    - Dict ReservationStation
+    - String type: "Mul" ou "Add"
+
+
+LoadStoreBuffer
+    - List [[valor, RS]]
+
+
+Registrador
+    - String reservationStation
+    - float valor
+
+
+Event
+    - String type: "Issue" ou "Finish"
+    - Int clock
+
+EventQueue
+    - List Events
+
+
+Lista de espera dos eventos que não conseguiram entrar nas RS, pois estavam todas cheias
+

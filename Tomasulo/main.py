@@ -40,8 +40,8 @@ def main():
     default_size_adder = 3
     default_size_multiplier = 2
     default_size_load = 3
-    default_size_fp_register = 4
-    default_size_ad_register = 4
+    default_size_fp_registers = 4
+    default_size_ad_registers = 4
 
     # File name
     print("Type the instruction file name")

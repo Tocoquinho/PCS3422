@@ -1,0 +1,10 @@
+lb    f0,0(r1)
+mul   f3,f0,f2
+SB    f3,0(r1)
+subi  r1,r1,8
+bne  r2,r1,loop
+lb    f0,0(r1)
+mul   f3,f0,f2
+SB    f3,0(r1)
+subi  r1,r1,8
+bne  r1,r1,loop

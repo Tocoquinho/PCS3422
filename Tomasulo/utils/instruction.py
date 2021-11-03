@@ -11,11 +11,12 @@ class Instruction:
         self.instruction_type = None
         self.input_registers = []
         self.output_register = None
-        self.setInstructionParameters()
-
+        
         # Execution information
         self.execution_time = None
         self.rs_name = None
+
+        self.setInstructionParameters()
 
 
     def setInstructionParameters(self):
@@ -49,8 +50,8 @@ class Instruction:
             'sltiu' : 'logical-arithmetic-imm',
     
             # u-imm
-            'lui'   : 'u-imm',
-            'auipc' : 'u-imm',
+            'auipc' : 'au-imm',
+            'lui'   : 'lu-imm',
 
             # load
             'lb'    : 'load',
@@ -87,54 +88,59 @@ class Instruction:
             'remu'  : 'mul-div'
         }
 
-        instruction_str = self.instruction
+        instruction_str = self.instruction.lower()
 
         # If the instruction presents the preamble
         if len(instruction_str) > 29:
             instruction_str = self.instruction[29:]
         
-        # Remove spaces
-        instruction_str = instruction_str.replace(' ', '')
         # Split instruction name from its arguments in a list
-        instruction_parts = instruction_str.split('\t')
+        instruction_parts = instruction_str.split()
         # Split the operands in a list
-        instruction_operands = instruction_parts[1].split(',')
+        instruction_operation = instruction_parts[0]
+        instruction_operands = instruction_parts[1].replace(', ', '').split(',')
 
-        self.instruction_type = instruction_types[instruction_parts[0]]
-        self.input_registers = self.get_input_registers(instruction_types[instruction_parts[0]], instruction_operands)
-        self.output_register = self.get_output_registers(instruction_types[instruction_parts[0]], instruction_operands)
-        self.execution_time = self.get_execution_time(instruction_types[instruction_parts[0]])
+        self.instruction_type = instruction_types[instruction_operation]
+        self.input_registers = self.get_input_registers(instruction_types[instruction_operation], instruction_operands)
+        self.output_register = self.get_output_registers(instruction_types[instruction_operation], instruction_operands)
+        self.execution_time = self.get_execution_time(instruction_types[instruction_operation])
 
     
-    def get_input_registers(instruction_type, operands):
+    def get_input_registers(self, instruction_type, operands):
         if instruction_type   == 'logical-arithmetic'       : return [operands[1], operands[2]]
 
         elif instruction_type == 'logical-arithmetic-imm'   : return [operands[1]]
 
-        elif instruction_type == 'u-imm'                    : return []
+        elif instruction_type == 'au-imm'                   : return []
+
+        elif instruction_type == 'lu-imm'                   : return []
 
         elif instruction_type == 'load'                     : return [operands[1].split('(')[1].replace(')','')]
 
         elif instruction_type == 'store'                    : return [operands[0],operands[1].split('(')[1].replace(')','')]
 
-        elif instruction_type == 'branch-jump'              : return [operands[1]]
+        elif instruction_type == 'branch-jump'              : return [operands[0],operands[1]]
 
         elif instruction_type == 'jump-imm'                 : return []
 
         elif instruction_type == 'mul-div'                  : return [operands[1], operands[2]]
 
-    def get_output_registers(instruction_type, operands):
-        if instruction_type == 'store'  : return []
-        else                            : return [operands[0]]
+    def get_output_registers(self, instruction_type, operands):
+        if instruction_type == 'store'          : return None
+        elif instruction_type == 'branch-jump'  : return None
+        elif instruction_type == 'jump-imm'     : return None
+        else                                    : return operands[0]
 
-    def get_execution_time(instruction_type):
-        if instruction_type   == 'logical-arithmetic'       : return 4
+    def get_execution_time(self, instruction_type):
+        if instruction_type   == 'logical-arithmetic'       : return 1
 
-        elif instruction_type == 'logical-arithmetic-imm'   : return 4
+        elif instruction_type == 'logical-arithmetic-imm'   : return 1
 
-        elif instruction_type == 'u-imm'                    : return 4
+        elif instruction_type == 'au-imm'                   : return 4
 
-        elif instruction_type == 'load'                     : return 2
+        elif instruction_type == 'lu-imm'                   : return 4
+
+        elif instruction_type == 'load'                     : return 8
 
         elif instruction_type == 'store'                    : return 2
 
@@ -145,5 +151,6 @@ class Instruction:
         elif instruction_type == 'mul-div'                  : return 10
 
     def print(self):
-        print(f"    Instruction: {self.instruction}")
-        print(f"    Steps:\n{self.steps}")
+        instruction_txt = self.instruction.strip('\n')
+        print(f"    Instruction: {instruction_txt}")
+        print(f"    Steps:\n        {self.steps}")

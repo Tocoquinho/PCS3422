@@ -18,12 +18,18 @@ def eventEngine(event_queue):
         
         event_queue.print()
         tomasulo.print()
+        print("------------------------------------------")
 
         # Send next event to the system
         event = event_queue.getNextEvent()
-        new_event = tomasulo.receiveEvent(event)
+        new_events = tomasulo.receiveEvent(event)
+
+        # Tranform new events in a list
+        if type(new_events) != list:
+            new_events = [new_events]
 
         # If there is a new event, add it to the queue
+        for new_event in new_events:
         if new_event != None:
             event_queue.addEvent(new_event)
 

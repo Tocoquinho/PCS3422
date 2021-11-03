@@ -17,13 +17,16 @@ class ActiveReservationStation():
 
     def updateDependency(self, rs_name):
         """
-        Checks if the instruction inside this RS depends on the
-        provided rs_name. If it does, update it with the value.
+        Check if the instruction inside this RS depends on the
+        provided rs_name. If it does, update it with the value 
+        and return True. Otherwise, return False.
         The value is 1 as an abstraction.
         """
         for i in range(len(self.args)):
             if self.args[i] == rs_name:
                 self.args[i] = 1
+                return True
+        return False
 
     def print(self):
         self.instruction.print()
@@ -43,9 +46,9 @@ class ReservationStations():
         store at the reservation station (RS). If the RS is full, 
         return None. Otherwise, return the RS name.
         """
-        for key in self.station.keys():
-            if self.station[key] == None:
-                self.station[key] = ActiveReservationStation(instruction, args)
+        for key in self.stations.keys():
+            if self.stations[key] == None:
+                self.stations[key] = ActiveReservationStation(instruction, args)
                 return key
         return None
 
@@ -65,18 +68,16 @@ class ReservationStations():
         dependencies.
         """
         executable_RSs = []
-        for key in self.station.keys():
-            if self.station[key] == None:
-                self.station[key].updateDependency(rs_name)
+        for key in self.stations.keys():
+            if self.stations[key] != None:
+                updated = self.stations[key].updateDependency(rs_name)
                 # Check if there is no other dependency for this RS
-                if self.station[key].isExecutable():
+                if updated and self.stations[key].isExecutable():
                     executable_RSs.append(key)
         return executable_RSs
 
     def print(self):
-        for name, station in self.stations.values():
-            print(f"Station {name}")
+        for name, station in self.stations.items():
+            print(f"Station {name}:")
             if station != None:
                 station.print()
-            else:
-                print("_")

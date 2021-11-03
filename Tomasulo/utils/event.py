@@ -14,7 +14,7 @@ class Event:
         if self.instruction != None:
             instruction_str = ": " + self.instruction.instruction
         
-        print(f"    {self.time:03} - {self.event_type}{instruction_str}")
+        print(f"    {self.time:03} - {self.event_type}{instruction_str}", end="")
 
 
 class EventQueue:
@@ -27,7 +27,7 @@ class EventQueue:
 
 
     def addEvent(self, new_event):
-        index = 0
+        index = len(self.queue)
         for i, event in enumerate(self.queue):
             if event.time > new_event.time:
                 index = i 

@@ -1,4 +1,0 @@
-lb  f0,0,R1
-mul   f4,f0,f2
-sb  f4,0,r1
-subi    f4,0,r1
